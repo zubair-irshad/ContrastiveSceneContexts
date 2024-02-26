@@ -105,11 +105,11 @@ def main(config):
 
 def single_proc_run(config):
 
-  os.environ['MASTER_ADDR'] = 'localhost'
-  os.environ['MASTER_PORT'] = '12355'
+  # os.environ['MASTER_ADDR'] = 'localhost'
+  # os.environ['MASTER_PORT'] = '12355'
 
-  # initialize the process group
-  dist.init_process_group(backend='nccl', rank=torch.cuda.device_count(), world_size=1)
+  # # initialize the process group
+  # dist.init_process_group(backend='nccl', rank=torch.cuda.device_count(), world_size=1)
   
   from lib.ddp_data_loaders import make_data_loader
 
