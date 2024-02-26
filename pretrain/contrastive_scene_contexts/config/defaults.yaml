@@ -4,7 +4,7 @@
 # LICENSE file in the root directory of this source tree.
 
 defaults:
-  - hydra/launcher: submitit_local
+  # - hydra/launcher: submitit_local
   - hydra/hydra_logging: colorlog
 
 trainer:
