@@ -12,7 +12,9 @@ from omegaconf import OmegaConf
 
 from easydict import EasyDict as edict
 
-import lib.multiprocessing_utils as mpu
+# import lib.multiprocessing_utils as mpu
+
+import multiprocessing as mp
 import hydra
 
 from lib.ddp_trainer import PointNCELossTrainer, PartitionPointNCELossTrainer, PartitionPointNCELossTrainerPointNet
@@ -53,8 +55,10 @@ def main(config):
 
   # Convert to dict
   if config.misc.num_gpus > 1:
-      mpu.multi_proc_run(config.misc.num_gpus,
+      mp.multi_proc_run(config.misc.num_gpus,
               fun=single_proc_run, fun_args=(config,))
+      # mpu.multi_proc_run(config.misc.num_gpus,
+      #         fun=single_proc_run, fun_args=(config,))
   else:
       single_proc_run(config)
 
