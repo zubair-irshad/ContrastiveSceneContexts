@@ -89,13 +89,13 @@ data:
   random_rotation_xyz: False
   world_space: False
 
-hydra:
-  run:
-    dir: ${misc.out_dir}
-#   sweep:
+# hydra:
+#   run:
 #     dir: ${misc.out_dir}
-  launcher:
-    partition: debug
+# #   sweep:
+# #     dir: ${misc.out_dir}
+#   launcher:
+#     partition: debug
   #   submitit_folder: ${hydra.sweep.dir}/.submitit/%j
   #   name: ${hydra.job.name}
     # timeout_min: 60
