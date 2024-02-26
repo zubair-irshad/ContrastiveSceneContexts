@@ -73,8 +73,8 @@ def single_proc_run(config):
 
     # Initialize distributed training environment if multiple GPUs are available
     if config.misc.num_gpus > 1:
-        torch.cuda.set_device(config.misc.local_rank)
-        dist.init_process_group(backend='nccl', init_method='env://')
+        # torch.cuda.set_device(config.misc.local_rank)
+        dist.init_process_group(backend='nccl', init_method='env://', rank=torch.cuda.device_count())
 
     train_loader = make_data_loader(
         config,
