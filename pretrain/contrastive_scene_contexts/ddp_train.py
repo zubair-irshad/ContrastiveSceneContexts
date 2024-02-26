@@ -48,7 +48,8 @@ def main(config):
     config = OmegaConf.load('config.yaml')
     logging.info('===> Loaded exsiting config file')
   logging.info('===> Configurations')
-  logging.info(config.pretty())
+  # logging.info(config.pretty())
+  logging.info(config)
 
   # Convert to dict
   if config.misc.num_gpus > 1:
