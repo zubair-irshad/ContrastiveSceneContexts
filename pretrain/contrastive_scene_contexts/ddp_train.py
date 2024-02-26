@@ -74,6 +74,9 @@ def single_proc_run(config):
     # Initialize distributed training environment if multiple GPUs are available
     if config.misc.num_gpus > 1:
         # torch.cuda.set_device(config.misc.local_rank)
+        os.environ['MASTER_ADDR'] = 'localhost'
+        os.environ['MASTER_PORT'] = '12355'
+        os.environ["CUDA_VISIBLE_DEVICES"] = "0,2,3,4,5,6,7"
         dist.init_process_group(backend='nccl', init_method='env://', rank=torch.cuda.device_count(),  world_size = 1)
 
     train_loader = make_data_loader(
