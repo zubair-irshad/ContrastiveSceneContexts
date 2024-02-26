@@ -288,8 +288,8 @@ class ScanNetIndoorPairDataset(PairDataset):
     sel0 = sel0[1]
     sel1 = sel1[1]
 
-    print("sel0", sel0)
-    print("sel1", sel1)
+    # print("sel0", sel0)
+    # print("sel1", sel1)
 
     if not self.config.data.voxelize:
       sel0 = sel0[np.random.choice(sel0.shape[0], self.config.data.num_points, 
