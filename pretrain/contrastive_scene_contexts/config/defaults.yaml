@@ -58,7 +58,8 @@ shape_context:
 misc:
   out_dir: /checkpoint/jihou/checkpoints/default
   use_gpu: True
-  num_gpus: 1
+  num_gpus: 7
+  local_rank: 0
   lenient_weight_loading: False # Weights with the same size will be loaded
 
   train_num_thread: 2
@@ -85,7 +86,7 @@ data:
   voxel_size: 0.025
   voxelize: False
   num_points: 40000
-  scannet_match_dir: /checkpoint/jihou/data/scannet/partial_frames/
+  scannet_match_dir: /checkpoint/jihou/data/scannet/partial_fras/
   random_rotation_xyz: False
   world_space: False
 
