@@ -75,5 +75,6 @@ def single_proc_run(config):
 
 
 if __name__ == "__main__":
+  print("HEREE")
   os.environ['MKL_THREADING_LAYER'] = 'GNU'
   main()
