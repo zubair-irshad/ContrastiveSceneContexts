@@ -37,14 +37,17 @@ class InfSampler(Sampler):
 
 class DistributedInfSampler(InfSampler):
   def __init__(self, data_source, num_replicas=None, rank=None, shuffle=True):
-    if num_replicas is None:
-      if not dist.is_available():
-          raise RuntimeError("Requires distributed package to be available")
-      num_replicas = dist.get_world_size()
-    if rank is None:
-      if not dist.is_available():
-          raise RuntimeError("Requires distributed package to be available")
-      rank = dist.get_rank()
+    # if num_replicas is None:
+    #   if not dist.is_available():
+    #       raise RuntimeError("Requires distributed package to be available")
+    #   num_replicas = dist.get_world_size()
+    # if rank is None:
+    #   if not dist.is_available():
+    #       raise RuntimeError("Requires distributed package to be available")
+    #   rank = dist.get_rank()
+
+    num_replicas =1
+    rank = 0
 
     self.data_source = data_source
     self.num_replicas = num_replicas
