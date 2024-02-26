@@ -15,7 +15,10 @@ import torch.nn as nn
 import torch
 import torch.optim as optim
 import torch.nn.functional as F
-from tensorboardX import SummaryWriter
+# from tensorboardX import SummaryWriter
+import wandb
+wandb.init(project="scene_context")
+
 from torch.utils.data.distributed import DistributedSampler
 from torch.utils.data.sampler import RandomSampler
 from lib.data_sampler import InfSampler, DistributedInfSampler
@@ -151,7 +154,7 @@ class ContrastiveLossTrainer:
       logging.info("=> no checkpoint found at '{}'".format(checkpoint_fn))
 
     if self.is_master:
-        self.writer = SummaryWriter(logdir='logs')
+        # self.writer = SummaryWriter(logdir='logs')
         if not os.path.exists('weights'):
           os.makedirs('weights', mode=0o755)
         OmegaConf.save(config, 'config.yaml')
@@ -234,7 +237,8 @@ class PointNCELossTrainer(ContrastiveLossTrainer):
 
       # Print logs
       if curr_iter % self.stat_freq == 0 and self.is_master:
-        self.writer.add_scalar('train/loss', batch_loss['loss'], curr_iter)
+        # self.writer.add_scalar('train/loss', batch_loss['loss'], curr_iter)
+        wandb.log({'train/loss': batch_loss['loss']})
         logging.info(
             "Train Epoch: {:.3f} [{}/{}], Current Loss: {:.3e}"
             .format(epoch, curr_iter,
