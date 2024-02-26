@@ -39,6 +39,10 @@ def get_trainer(trainer):
 
 @hydra.main(config_path='config', config_name='defaults.yaml')
 def main(config):
+
+  print("=======================\n\n\n")
+  print("config: ", config)
+  print("=======================\n\n\n")
   if os.path.exists('config.yaml'):
     logging.info('===> Loading exsiting config file')
     config = OmegaConf.load('config.yaml')
