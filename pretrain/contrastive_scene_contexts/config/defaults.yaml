@@ -95,15 +95,14 @@ hydra:
   sweep:
     dir: ${misc.out_dir}
   launcher:
-    partition: debug
+    # partition: debug
     submitit_folder: ${hydra.sweep.dir}/.submitit/%j
     name: ${hydra.job.name}
-    timeout_min: 3600
-    cpus_per_task: 70
-    gpus_per_node: 8
+    timeout_min: 60
+    cpus_per_task: 8
+    gpus_per_node: 0
     tasks_per_node: 1
-    mem_gb: 320
+    mem_gb: 4
     nodes: 1
-    exclude: balrog,gimli
-    max_num_timeout: 3
-    signal_delay_s: 300
+    # max_num_timeout: 3
+    # signal_delay_s: 300
