@@ -285,6 +285,9 @@ class ScanNetIndoorPairDataset(PairDataset):
     sel0 = ME.utils.sparse_quantize(xyz0 / self.voxel_size, return_index=True, return_inverse=False)
     sel1 = ME.utils.sparse_quantize(xyz1 / self.voxel_size, return_index=True, return_inverse=False)
 
+    sel0 = sel0[1]
+    sel1 = sel1[1]
+
     print("sel0", sel0)
     print("sel1", sel1)
 
