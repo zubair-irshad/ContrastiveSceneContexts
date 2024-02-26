@@ -10,7 +10,7 @@
 trainer:
   trainer: ContrastiveLossTrainer
   overwrite_checkpoint: False
-  batch_size: 4
+  batch_size: 32
 
   # Metric learning loss
   neg_thresh: 1.4
