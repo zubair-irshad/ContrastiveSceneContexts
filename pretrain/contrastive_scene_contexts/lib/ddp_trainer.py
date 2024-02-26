@@ -23,7 +23,7 @@ from lib.data_sampler import InfSampler, DistributedInfSampler
 from model import load_model
 from lib.timer import Timer, AverageMeter
 
-import MinkowskiEngine as ME
+# import MinkowskiEngine as ME
 
 import lib.distributed as du
 import torch.distributed as dist
