@@ -11,9 +11,9 @@ import sys
 import os
 
 from model.pointnet2.pointnet2_modules import PointnetSAModuleVotes, PointnetFPModule
-from model.pointnet2.pointnet2_utils import furthest_point_sample
+# from model.pointnet2.pointnet2_utils import furthest_point_sample
 
-import MinkowskiEngine as ME
+# import MinkowskiEngine as ME
 
 
 class PointNet2Backbone(nn.Module):
