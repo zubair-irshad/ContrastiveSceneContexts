@@ -12,6 +12,10 @@ from omegaconf import OmegaConf
 
 from easydict import EasyDict as edict
 
+import torch
+import torch.distributed as dist
+from torch.nn.parallel import DistributedDataParallel as DDP
+
 # import lib.multiprocessing_utils as mpu
 
 import multiprocessing as mp
@@ -53,30 +57,64 @@ def main(config):
   # logging.info(config.pretty())
   logging.info(config)
 
-  # Convert to dict
-  if config.misc.num_gpus > 1:
-      mp.multi_proc_run(config.misc.num_gpus,
-              fun=single_proc_run, fun_args=(config,))
-      # mpu.multi_proc_run(config.misc.num_gpus,
-      #         fun=single_proc_run, fun_args=(config,))
-  else:
-      single_proc_run(config)
+  # # Convert to dict
+  # if config.misc.num_gpus > 1:
+  #     mp.multi_proc_run(config.misc.num_gpus,
+  #             fun=single_proc_run, fun_args=(config,))
+  #     # mpu.multi_proc_run(config.misc.num_gpus,
+  #     #         fun=single_proc_run, fun_args=(config,))
+  # else:
+  #     single_proc_run(config)
+
+  single_proc_run(config)
 
 def single_proc_run(config):
-  from lib.ddp_data_loaders import make_data_loader
+    from lib.ddp_data_loaders import make_data_loader
 
-  train_loader = make_data_loader(
-      config,
-      int(config.trainer.batch_size / config.misc.num_gpus),
-      num_threads=int(config.misc.train_num_thread / config.misc.num_gpus))
+    # Initialize distributed training environment if multiple GPUs are available
+    if config.misc.num_gpus > 1:
+        torch.cuda.set_device(config.misc.local_rank)
+        dist.init_process_group(backend='nccl', init_method='env://')
 
-  Trainer = get_trainer(config.trainer.trainer)
-  trainer = Trainer(config=config, data_loader=train_loader)
+    train_loader = make_data_loader(
+        config,
+        int(config.trainer.batch_size / config.misc.num_gpus),
+        num_threads=int(config.misc.train_num_thread / config.misc.num_gpus)
+    )
 
-  if config.misc.is_train:
-    trainer.train()
-  else:
-    trainer.test()
+    Trainer = get_trainer(config.trainer.trainer)
+
+    if config.misc.num_gpus > 1:
+        model = Trainer.build_model()
+        model = DDP(model, device_ids=[config.misc.local_rank], output_device=config.misc.local_rank)
+        trainer = Trainer(config=config, model=model, data_loader=train_loader)
+    else:
+        trainer = Trainer(config=config, data_loader=train_loader)
+
+    if config.misc.is_train:
+        trainer.train()
+    else:
+        trainer.test()
+
+    # Cleanup
+    if config.misc.num_gpus > 1:
+        dist.destroy_process_group()
+
+# def single_proc_run(config):
+#   from lib.ddp_data_loaders import make_data_loader
+
+#   train_loader = make_data_loader(
+#       config,
+#       int(config.trainer.batch_size / config.misc.num_gpus),
+#       num_threads=int(config.misc.train_num_thread / config.misc.num_gpus))
+
+#   Trainer = get_trainer(config.trainer.trainer)
+#   trainer = Trainer(config=config, data_loader=train_loader)
+
+#   if config.misc.is_train:
+#     trainer.train()
+#   else:
+#     trainer.test()
 
 
 if __name__ == "__main__":
