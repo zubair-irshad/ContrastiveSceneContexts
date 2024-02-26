@@ -40,7 +40,8 @@ class SegmentationTrainer:
             config = OmegaConf.load('config.yaml')
             logging.info('===> Loaded exsiting config file')
         logging.info('===> Configurations')
-        logging.info(config.pretty())
+        # logging.info(config.pretty())
+        logging.info(config)
 
         # dataloader
         DatasetClass = load_dataset(config.data.dataset)
