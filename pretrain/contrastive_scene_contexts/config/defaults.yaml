@@ -3,9 +3,9 @@
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
 
-defaults:
+# defaults:
   # - hydra/launcher: submitit_local
-  - hydra/hydra_logging: colorlog
+  # - hydra/hydra_logging: colorlog
 
 trainer:
   trainer: ContrastiveLossTrainer
@@ -98,11 +98,11 @@ hydra:
     # partition: debug
     submitit_folder: ${hydra.sweep.dir}/.submitit/%j
     name: ${hydra.job.name}
-    timeout_min: 60
-    cpus_per_task: 8
-    gpus_per_node: 0
-    tasks_per_node: 1
-    mem_gb: 4
-    nodes: 1
+    # timeout_min: 60
+    # cpus_per_task: 8
+    # gpus_per_node: 0
+    # tasks_per_node: 1
+    # mem_gb: 4
+    # nodes: 1
     # max_num_timeout: 3
     # signal_delay_s: 300
