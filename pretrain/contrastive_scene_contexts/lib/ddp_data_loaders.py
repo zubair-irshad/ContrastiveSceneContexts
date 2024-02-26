@@ -285,6 +285,9 @@ class ScanNetIndoorPairDataset(PairDataset):
     sel0 = ME.utils.sparse_quantize(xyz0 / self.voxel_size, return_index=True)
     sel1 = ME.utils.sparse_quantize(xyz1 / self.voxel_size, return_index=True)
 
+    print("sel0", sel0)
+    print("sel1", sel1)
+
     if not self.config.data.voxelize:
       sel0 = sel0[np.random.choice(sel0.shape[0], self.config.data.num_points, 
                               replace=self.config.data.num_points>sel0.shape[0])]
