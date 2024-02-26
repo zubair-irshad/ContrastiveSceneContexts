@@ -4,7 +4,7 @@
 # LICENSE file in the root directory of this source tree.
 
 
-import model.res16unet as res16unet
+# import model.res16unet as res16unet
 import model.pointnet2backbone as pointnet2
 
 MODELS = []
@@ -13,7 +13,7 @@ MODELS = []
 def add_models(module):
   MODELS.extend([getattr(module, a) for a in dir(module) if 'Net' in a])
 
-add_models(res16unet)
+# add_models(res16unet)
 add_models(pointnet2)
 
 def get_models():
