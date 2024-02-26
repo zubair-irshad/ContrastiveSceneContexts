@@ -86,7 +86,7 @@ data:
   voxel_size: 0.025
   voxelize: False
   num_points: 40000
-  scannet_match_dir: /checkpoint/jihou/data/scannet/partial_fras/
+  scannet_match_dir: /wild6d_data/pointclouds/
   random_rotation_xyz: False
   world_space: False
 
