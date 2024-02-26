@@ -94,10 +94,10 @@ hydra:
     dir: ${misc.out_dir}
   sweep:
     dir: ${misc.out_dir}
-  launcher:
-    # partition: debug
-    submitit_folder: ${hydra.sweep.dir}/.submitit/%j
-    name: ${hydra.job.name}
+  # launcher:
+  #   # partition: debug
+  #   submitit_folder: ${hydra.sweep.dir}/.submitit/%j
+  #   name: ${hydra.job.name}
     # timeout_min: 60
     # cpus_per_task: 8
     # gpus_per_node: 0
