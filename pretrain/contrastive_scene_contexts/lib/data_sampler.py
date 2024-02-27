@@ -46,6 +46,9 @@ class DistributedInfSampler(InfSampler):
           raise RuntimeError("Requires distributed package to be available")
       rank = dist.get_rank()
 
+    print("num_replicas: ", num_replicas)
+    print("rank: ", rank)
+
     # num_replicas =1
     # rank = 0
 
