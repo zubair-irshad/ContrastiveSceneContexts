@@ -23,6 +23,23 @@ import hydra
 
 from lib.ddp_trainer import PointNCELossTrainer, PartitionPointNCELossTrainer, PartitionPointNCELossTrainerPointNet
 
+import torch.multiprocessing as mp
+from torch.utils.data.distributed import DistributedSampler
+from torch.nn.parallel import DistributedDataParallel as DDP
+from torch.distributed import init_process_group, destroy_process_group
+
+def ddp_setup(rank, world_size):
+    """
+    Args:
+        rank: Unique identifier of each process
+        world_size: Total number of processes
+    """
+    os.environ["MASTER_ADDR"] = "localhost"
+    os.environ["MASTER_PORT"] = "12355"
+    init_process_group(backend="nccl", rank=rank, world_size=world_size)
+    torch.cuda.set_device(rank)
+
+
 ch = logging.StreamHandler(sys.stdout)
 logging.getLogger().setLevel(logging.INFO)
 logging.basicConfig(
@@ -58,14 +75,14 @@ def main(config):
   logging.info(config)
 
   # # Convert to dict
-  # if config.misc.num_gpus > 1:
-  #     mp.multi_proc_run(config.misc.num_gpus,
-  #             fun=single_proc_run, fun_args=(config,))
-  #     # mpu.multi_proc_run(config.misc.num_gpus,
-  #     #         fun=single_proc_run, fun_args=(config,))
-  # else:
-  #     single_proc_run(config)
-
+  if config.misc.num_gpus > 1:
+      # mpu.multi_proc_run(config.misc.num_gpus,
+      #         fun=single_proc_run, fun_args=(config,))
+      # world_size = torch.cuda.device_count()
+      mp.spawn(multi_proc_run, args=(config.misc.num_gpus, config), nprocs=config.misc.num_gpus)
+  else:
+      single_proc_run(config)
+  
   single_proc_run(config)
 
 # def single_proc_run(config):
@@ -102,14 +119,30 @@ def main(config):
 #     # Cleanup
 #     if config.misc.num_gpus > 1:
 #         dist.destroy_process_group()
+  
+def multi_proc_run(rank, world_size, config):
 
+  ddp_setup(rank, world_size)
+  
+  from lib.ddp_data_loaders import make_data_loader
+
+  train_loader = make_data_loader(
+      config,
+      int(config.trainer.batch_size / config.misc.num_gpus),
+      num_threads=int(config.misc.train_num_thread / config.misc.num_gpus))
+
+  Trainer = get_trainer(config.trainer.trainer)
+  trainer = Trainer(config=config, data_loader=train_loader)
+
+  if config.misc.is_train:
+    trainer.train()
+  else:
+    trainer.test()
+
+  destroy_process_group()
+
+  
 def single_proc_run(config):
-
-  # os.environ['MASTER_ADDR'] = 'localhost'
-  # os.environ['MASTER_PORT'] = '12355'
-
-  # # initialize the process group
-  # dist.init_process_group(backend='nccl', rank=torch.cuda.device_count(), world_size=1)
   
   from lib.ddp_data_loaders import make_data_loader
 

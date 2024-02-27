@@ -58,7 +58,7 @@ shape_context:
 misc:
   out_dir: /checkpoint/jihou/checkpoints/default
   use_gpu: True
-  num_gpus: 1
+  num_gpus: 7
   lenient_weight_loading: False # Weights with the same size will be loaded
 
   train_num_thread: 2

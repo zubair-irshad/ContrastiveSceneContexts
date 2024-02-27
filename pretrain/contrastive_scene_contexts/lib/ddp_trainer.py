@@ -181,14 +181,14 @@ class ContrastiveLossTrainer:
         'optimizer': self.optimizer.state_dict(),
         'scheduler': self.scheduler.state_dict(),
     }
-    filepath = os.path.join('weights', f'{filename}.pth')
+    filepath = os.path.join('/home/ubuntu/zubair/ContrastiveSceneContexts/pretrain/contrastive_scene_contexts/output', f'{filename}.pth')
     logging.info("Saving checkpoint: {} ...".format(filepath))
     torch.save(state, filepath)
     # Delete symlink if it exists
-    if os.path.exists('weights/weights.pth'):
-      os.remove('weights/weights.pth')
-    # Create symlink
-    os.system('ln -s {}.pth weights/weights.pth'.format(filename))
+    # if os.path.exists('weights/weights.pth'):
+    #   os.remove('weights/weights.pth')
+    # # Create symlink
+    # os.system('ln -s {}.pth weights/weights.pth'.format(filename))
 
 class PointNCELossTrainer(ContrastiveLossTrainer):
 
