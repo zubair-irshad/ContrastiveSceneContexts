@@ -24,6 +24,11 @@ import os
 
 device = torch.device('cuda:0')
 
+import torch.multiprocessing as mp
+from torch.utils.data.distributed import DistributedSampler
+from torch.nn.parallel import DistributedDataParallel as DDP
+from torch.distributed import init_process_group, destroy_process_group
+
 def ddp_setup(rank, world_size):
     """
     Args:
@@ -161,17 +166,17 @@ def is_master_proc(num_gpus):
     return num_gpus == 1 or torch.distributed.get_rank() == 0
 
 
-def init_process_group(proc_rank, world_size):
-    """Initializes the default process group."""
-    # Set the GPU to use
-    torch.cuda.set_device(proc_rank)
-    # Initialize the process group
-    torch.distributed.init_process_group(
-        backend="nccl",
-        init_method="tcp://{}:{}".format("localhost", "10001"),
-        world_size=world_size,
-        rank=proc_rank
-    )
+# def init_process_group(proc_rank, world_size):
+#     """Initializes the default process group."""
+#     # Set the GPU to use
+#     torch.cuda.set_device(proc_rank)
+#     # Initialize the process group
+#     torch.distributed.init_process_group(
+#         backend="nccl",
+#         init_method="tcp://{}:{}".format("localhost", "10001"),
+#         world_size=world_size,
+#         rank=proc_rank
+#     )
 
 def destroy_process_group():
     """Destroys the default process group."""
