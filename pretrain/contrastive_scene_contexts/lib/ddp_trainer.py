@@ -17,7 +17,7 @@ import torch.optim as optim
 import torch.nn.functional as F
 # from tensorboardX import SummaryWriter
 import wandb
-wandb.init(project="scene_context")
+
 
 from torch.utils.data.distributed import DistributedSampler
 from torch.utils.data.sampler import RandomSampler

@@ -16,6 +16,7 @@ import torch
 import torch.distributed as dist
 from torch.nn.parallel import DistributedDataParallel as DDP
 
+import wandb
 # import lib.multiprocessing_utils as mpu
 
 import multiprocessing as mp
@@ -73,6 +74,11 @@ def main(config):
   logging.info('===> Configurations')
   # logging.info(config.pretty())
   logging.info(config)
+
+  if config.misc.local_rank == 0:
+      wandb.init(
+          project="scene_context"
+      )
 
   # # Convert to dict
   if config.misc.num_gpus > 1:
