@@ -76,10 +76,10 @@ def main(config):
   # logging.info(config.pretty())
   logging.info(config)
 
-  if config.misc.local_rank == 0:
-      wandb.init(
-          project="scene_context"
-      )
+  # if config.misc.local_rank == 0:
+  #     wandb.init(
+  #         project="scene_context"
+  #     )
 
   # # Convert to dict
   if config.misc.num_gpus > 1:

@@ -39,6 +39,14 @@ torch.autograd.set_detect_anomaly(True)
 
 LARGE_NUM = 1e9
 
+
+rank = dist.get_rank()
+
+if rank == 0:
+  wandb.init(
+      project="scene_context"
+  )
+
 def apply_transform(pts, trans):
   voxel_size = 0.025
   R = trans[:3, :3]
