@@ -19,13 +19,13 @@ import torch.nn as nn
 from torch.autograd import Function
 
 import os
-os.environ['MASTER_ADDR'] = 'localhost'
-os.environ['MASTER_PORT'] = '29500'
+# os.environ['MASTER_ADDR'] = 'localhost'
+# os.environ['MASTER_PORT'] = '29500'
 
 device = torch.device('cuda:0')
 
-''' in each subprocess '''
-dist.init_process_group('gloo', rank=0, world_size=1)
+# ''' in each subprocess '''
+# dist.init_process_group('gloo', rank=0, world_size=1)
 
 
 def get_world_size():

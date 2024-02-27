@@ -37,5 +37,5 @@ def main(config):
    
 if __name__ == '__main__':
   __spec__ = None
-  os.environ['MKL_THREADING_LAYER'] = 'GNU'
+  # os.environ['MKL_THREADING_LAYER'] = 'GNU'
   main()
