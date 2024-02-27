@@ -37,6 +37,7 @@ def ddp_setup(rank, world_size):
     """
     os.environ["MASTER_ADDR"] = "localhost"
     os.environ["MASTER_PORT"] = "123568"
+    os.environ["CUDA_VISIBLE_DEVICES"] = "0,2,3,4,5,6,7"
     init_process_group(backend="nccl", rank=rank, world_size=world_size)
     torch.cuda.set_device(rank)
 
