@@ -161,7 +161,7 @@ class ContrastiveLossTrainer:
           logging.info('===> Loaded weights: ' + config.net.weight)
 
     #---------------- default: resume checkpoint in current folder ----------------------
-    checkpoint_fn = 'weights/weights.pth'
+    checkpoint_fn = '/home/ubuntu/zubair/ContrastiveSceneContexts/pretrain/contrastive_scene_contexts/output/weights.pth'
     if osp.isfile(checkpoint_fn):
       if self.is_master:
         logging.info("=> loading checkpoint '{}'".format(checkpoint_fn))
