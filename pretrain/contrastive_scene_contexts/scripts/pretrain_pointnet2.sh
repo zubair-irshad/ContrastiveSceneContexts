@@ -20,7 +20,7 @@ python ddp_train.py -m \
     trainer.trainer=PartitionPointNCELossTrainerPointNet \
     trainer.batch_size=128 \
     trainer.stat_freq=5 \
-    trainer.checkpoint_freq=3000 \
+    trainer.checkpoint_freq=500 \
     trainer.lr_update_freq=1000 \
     shape_context.r1=0.05 \
     shape_context.r2=0.5 \
