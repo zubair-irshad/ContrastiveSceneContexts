@@ -86,6 +86,8 @@ def main(config):
       # mpu.multi_proc_run(config.misc.num_gpus,
       #         fun=single_proc_run, fun_args=(config,))
       # world_size = torch.cuda.device_count()
+
+      print("config.misc.num_gpus: ", config.misc.num_gpus)
       mp.spawn(multi_proc_run, args=(config.misc.num_gpus, config), nprocs=config.misc.num_gpus)
   else:
       single_proc_run(config)
