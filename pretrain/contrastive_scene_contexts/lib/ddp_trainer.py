@@ -40,12 +40,19 @@ torch.autograd.set_detect_anomaly(True)
 LARGE_NUM = 1e9
 
 
-rank = dist.get_rank()
+# rank = dist.get_rank()
 
-if rank == 0:
+
+is_master = du.is_master_proc(7)
+
+if is_master:
   wandb.init(
       project="scene_context"
   )
+# if rank == 0:
+#   wandb.init(
+#       project="scene_context"
+#   )
 
 def apply_transform(pts, trans):
   voxel_size = 0.025

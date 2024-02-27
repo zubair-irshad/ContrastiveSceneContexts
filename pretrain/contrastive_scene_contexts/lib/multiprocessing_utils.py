@@ -38,33 +38,11 @@ def run(proc_rank, world_size, error_queue, fun, fun_args, fun_kwargs):
 
 import multiprocessing as mp
 
-def multi_proc_run(num_proc, fun, fun_args=(), fun_kwargs={}):
-    """Runs a function in a multi-proc setting."""
-
-    # Set start method to 'spawn'
-    mp.set_start_method('spawn')
-
-    # Handle errors from training subprocesses
-    error_queue = mp.SimpleQueue()
-    error_handler = ErrorHandler(error_queue)
-
-    # Run each training subprocess
-    ps = []
-    for i in range(num_proc):
-        p_i = mp.Process(
-            target=run,
-            args=(i, num_proc, error_queue, fun, fun_args, fun_kwargs)
-        )
-        ps.append(p_i)
-        p_i.start()
-        error_handler.add_child(p_i.pid)
-
-    # Wait for each subprocess to finish
-    for p in ps:
-        p.join()
-
 # def multi_proc_run(num_proc, fun, fun_args=(), fun_kwargs={}):
 #     """Runs a function in a multi-proc setting."""
+
+#     # Set start method to 'spawn'
+#     mp.set_start_method('spawn')
 
 #     # Handle errors from training subprocesses
 #     error_queue = mp.SimpleQueue()
@@ -84,3 +62,25 @@ def multi_proc_run(num_proc, fun, fun_args=(), fun_kwargs={}):
 #     # Wait for each subprocess to finish
 #     for p in ps:
 #         p.join()
+
+def multi_proc_run(num_proc, fun, fun_args=(), fun_kwargs={}):
+    """Runs a function in a multi-proc setting."""
+
+    # Handle errors from training subprocesses
+    error_queue = mp.SimpleQueue()
+    error_handler = ErrorHandler(error_queue)
+
+    # Run each training subprocess
+    ps = []
+    for i in range(num_proc):
+        p_i = mp.Process(
+            target=run,
+            args=(i, num_proc, error_queue, fun, fun_args, fun_kwargs)
+        )
+        ps.append(p_i)
+        p_i.start()
+        error_handler.add_child(p_i.pid)
+
+    # Wait for each subprocess to finish
+    for p in ps:
+        p.join()

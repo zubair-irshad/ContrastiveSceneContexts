@@ -22,24 +22,13 @@ import wandb
 import multiprocessing as mp
 import hydra
 
+import lib.distributed as du
 from lib.ddp_trainer import PointNCELossTrainer, PartitionPointNCELossTrainer, PartitionPointNCELossTrainerPointNet
 
 import torch.multiprocessing as mp
 from torch.utils.data.distributed import DistributedSampler
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.distributed import init_process_group, destroy_process_group
-
-def ddp_setup(rank, world_size):
-    """
-    Args:
-        rank: Unique identifier of each process
-        world_size: Total number of processes
-    """
-    os.environ["MASTER_ADDR"] = "localhost"
-    os.environ["MASTER_PORT"] = "123568"
-    os.environ["CUDA_VISIBLE_DEVICES"] = "0,2,3,4,5,6,7"
-    init_process_group(backend="nccl", rank=rank, world_size=world_size)
-    torch.cuda.set_device(rank)
 
 
 ch = logging.StreamHandler(sys.stdout)
@@ -131,7 +120,7 @@ def main(config):
   
 def multi_proc_run(rank, world_size, config):
 
-  ddp_setup(rank, world_size)
+  du.ddp_setup(rank, world_size)
   
   from lib.ddp_data_loaders import make_data_loader
 
