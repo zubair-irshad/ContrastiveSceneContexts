@@ -67,6 +67,7 @@ misc:
   # NCE related
   nceT: 0.07
   npos: 4096
+  local_rank: 0
 
   # TODO(s9xie): all args for scannet training
   train_limit_numpoints: 0
