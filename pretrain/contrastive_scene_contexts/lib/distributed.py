@@ -24,6 +24,17 @@ import os
 
 device = torch.device('cuda:0')
 
+def ddp_setup(rank, world_size):
+    """
+    Args:
+        rank: Unique identifier of each process
+        world_size: Total number of processes
+    """
+    os.environ["MASTER_ADDR"] = "localhost"
+    os.environ["MASTER_PORT"] = "123456"
+    init_process_group(backend="nccl", rank=rank, world_size=world_size)
+    torch.cuda.set_device(rank)
+
 # ''' in each subprocess '''
 # dist.init_process_group('gloo', rank=0, world_size=1)
 
