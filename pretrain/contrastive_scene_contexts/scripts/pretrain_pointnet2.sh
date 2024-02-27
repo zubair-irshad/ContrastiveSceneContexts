@@ -12,15 +12,15 @@ python ddp_train.py -m \
     net.conv1_kernel_size=3 \
     net.model_n_out=32 \
     opt.lr=0.1 \
-    opt.max_iter=100000 \
+    opt.max_iter=300000 \
     data.dataset=ScanNetMatchPairDataset \
     data.voxelize=False \
     data.num_points=20000 \
     data.world_space=True \
     trainer.trainer=PartitionPointNCELossTrainerPointNet \
-    trainer.batch_size=32 \
+    trainer.batch_size=128 \
     trainer.stat_freq=5 \
-    trainer.checkpoint_freq=1000 \
+    trainer.checkpoint_freq=3000 \
     trainer.lr_update_freq=1000 \
     shape_context.r1=0.05 \
     shape_context.r2=0.5 \
@@ -29,7 +29,7 @@ python ddp_train.py -m \
     shape_context.weight_inner=False \
     shape_context.fast_partition=True \
     misc.num_gpus=7 \
-    misc.train_num_thread=2 \
+    misc.train_num_thread=64 \
     misc.npos=4096 \
     misc.nceT=0.4 \
     misc.out_dir=${OUT_DIR} \
