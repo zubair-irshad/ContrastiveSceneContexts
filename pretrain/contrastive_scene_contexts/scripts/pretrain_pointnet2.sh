@@ -28,7 +28,7 @@ python ddp_train.py -m \
     shape_context.nbins_zy=2 \
     shape_context.weight_inner=False \
     shape_context.fast_partition=True \
-    misc.num_gpus=8 \
+    misc.num_gpus=7 \
     misc.train_num_thread=2 \
     misc.npos=4096 \
     misc.nceT=0.4 \
