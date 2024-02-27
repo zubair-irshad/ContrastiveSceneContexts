@@ -23,7 +23,9 @@ import multiprocessing as mp
 import hydra
 
 import lib.distributed as du
-from lib.ddp_trainer import PointNCELossTrainer, PartitionPointNCELossTrainer, PartitionPointNCELossTrainerPointNet
+# from lib.ddp_trainer import PointNCELossTrainer, PartitionPointNCELossTrainer, PartitionPointNCELossTrainerPointNet
+
+from lib.ddp_trainer_2 import PointNCELossTrainer, PartitionPointNCELossTrainer, PartitionPointNCELossTrainerPointNet
 
 import torch.multiprocessing as mp
 from torch.utils.data.distributed import DistributedSampler
@@ -130,7 +132,7 @@ def multi_proc_run(rank, world_size, config):
       num_threads=int(config.misc.train_num_thread / config.misc.num_gpus))
 
   Trainer = get_trainer(config.trainer.trainer)
-  trainer = Trainer(config=config, data_loader=train_loader)
+  trainer = Trainer(config=config, data_loader=train_loader, rank=rank)
 
   if config.misc.is_train:
     trainer.train()
