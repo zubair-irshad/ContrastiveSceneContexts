@@ -35,7 +35,7 @@ class ScannetDetectionDataset(Dataset):
         #    self.scan_names = all_scan_names
         if split_set in ['train', 'val', 'test']:
             split_filenames = os.path.join(ROOT_DIR, 'scannet/meta_data',
-                'scannetv2_{}.txt'.format(split_set))
+                'scannet_nerfmae_{}.txt'.format(split_set))
 
             if by_scenes != None and split_set == 'train':
                 split_filenames = by_scenes
