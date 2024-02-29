@@ -51,10 +51,14 @@ def multi_proc_run(rank, world_size, config):
 @hydra.main(config_path='config', config_name='default.yaml')
 def main(config):
   # fix seed
-  np.random.seed(config.misc.seed)
-  torch.manual_seed(config.misc.seed)
-  torch.cuda.manual_seed(config.misc.seed)
-  port = random.randint(10001, 20001)
+  # np.random.seed(config.misc.seed)
+  # torch.manual_seed(config.misc.seed)
+  # torch.cuda.manual_seed(config.misc.seed)
+  # port = random.randint(10001, 20001)
+
+  print("=======================\n\n\n")
+  print("config: ", config)
+  print("=======================\n\n\n")
 
   # # Convert to dict
   if config.misc.num_gpus > 1:
