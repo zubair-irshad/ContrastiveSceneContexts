@@ -284,7 +284,8 @@ class DetectionTrainer():
                 for key in stat_dict:
                     # self.writer.add_scalar('training/{}'.format(key), stat_dict[key]/batch_interval, 
                     #                       (epoch_cnt*len(self.train_dataloader)+batch_idx)*self.config.data.batch_size)
-                    wandb.log({key:stat_dict[key]/batch_interval for key in stat_dict})
+                    wandb.log('training/{}'.format(key), stat_dict[key]/batch_interval)
+                # wandb.log({key:stat_dict[key]/batch_interval for key in stat_dict})
                 for key in sorted(stat_dict.keys()):
                     logging.info('mean %s: %f'%(key, stat_dict[key]/batch_interval))
                     stat_dict[key] = 0
