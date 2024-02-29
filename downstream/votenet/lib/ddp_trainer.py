@@ -41,7 +41,7 @@ class DetectionTrainer():
             config = OmegaConf.load('config.yaml')
             logging.info('===> Loaded exsiting config file')
         logging.info('===> Configurations')
-        logging.info(config.pretty())
+        # logging.info(config.pretty())
 
         # Create Dataset and Dataloader
         if config.data.dataset == 'sunrgbd':
