@@ -355,7 +355,7 @@ class DetectionTrainer():
             logging.info('eval %s: %f'%(key, metrics_dict[key]))
         if self.is_master:
             # self.writer.add_scalar('validation/mAP{}'.format(self.config.test.ap_iou), metrics_dict['mAP'], (epoch_cnt+1)*len(self.train_dataloader)*self.config.data.batch_size)
-            wandb.log('validation/mAP{}'.format(self.config.test.ap_iou), metrics_dict['mAP'], step=(epoch_cnt+1)*len(self.train_dataloader)*self.config.data.batch_size)
+            wandb.log('validation/mAP{}'.format(self.config.test.ap_iou), metrics_dict['mAP'])
         #mean_loss = stat_dict['loss']/float(batch_idx+1)
 
         return metrics_dict['mAP']
