@@ -83,7 +83,7 @@ def main(config):
   else:
       single_proc_run(config)
   
-  single_proc_run(config)
+  # single_proc_run(config)
 
 # def single_proc_run(config):
 #     from lib.ddp_data_loaders import make_data_loader

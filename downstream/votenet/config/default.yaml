@@ -3,9 +3,9 @@
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
 
-defaults:
-- hydra/launcher: submitit_slurm
-- hydra/hydra_logging: colorlog
+# defaults:
+# - hydra/launcher: submitit_slurm
+# - hydra/hydra_logging: colorlog
 
 net:
   model: votenet
@@ -60,21 +60,21 @@ misc:
   num_gpus: 1
   seed: 0
 
-hydra:
-  run:
-    dir: ${misc.log_dir}
-  sweep:
-    dir: ${misc.log_dir}
-  launcher:
-    partition: debug
-    submitit_folder: ${hydra.sweep.dir}/.submitit/%j
-    name: ${hydra.job.name}
-    timeout_min: 5200
-    cpus_per_task: 10
-    gpus_per_node: ${misc.num_gpus}
-    tasks_per_node: 1
-    mem_gb: 64
-    nodes: 1
-    max_num_timeout: 3
-    exclude: balrog,gimli,pegasus,char
-    comment: criticalEXP
+# hydra:
+#   run:
+#     dir: ${misc.log_dir}
+#   sweep:
+#     dir: ${misc.log_dir}
+#   launcher:
+#     partition: debug
+#     submitit_folder: ${hydra.sweep.dir}/.submitit/%j
+#     name: ${hydra.job.name}
+#     timeout_min: 5200
+#     cpus_per_task: 10
+#     gpus_per_node: ${misc.num_gpus}
+#     tasks_per_node: 1
+#     mem_gb: 64
+#     nodes: 1
+#     max_num_timeout: 3
+#     exclude: balrog,gimli,pegasus,char
+#     comment: criticalEXP
