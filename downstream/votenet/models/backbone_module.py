@@ -15,7 +15,7 @@ from models.backbone.pointnet2.pointnet2_utils import furthest_point_sample
 from models.backbone.sparseconv.config import get_config
 from models.backbone.sparseconv.models_sparseconv import load_model
 
-import MinkowskiEngine as ME
+# import MinkowskiEngine as ME
 
 
 class Pointnet2Backbone(nn.Module):
