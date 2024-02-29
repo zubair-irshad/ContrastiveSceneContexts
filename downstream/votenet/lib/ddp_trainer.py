@@ -339,8 +339,8 @@ class DetectionTrainer():
         logging.info('eval mean %s: %f'%(key, stat_dict[key]/(float(batch_idx+1))))
         if self.is_master:
             for key in sorted(stat_dict.keys()):
-                self.writer.add_scalar('validation/{}'.format(key), stat_dict[key]/float(batch_idx+1),
-                                (epoch_cnt+1)*len(self.train_dataloader)*self.config.data.batch_size)
+                # self.writer.add_scalar('validation/{}'.format(key), stat_dict[key]/float(batch_idx+1),
+                #                 (epoch_cnt+1)*len(self.train_dataloader)*self.config.data.batch_size)
                 
                 wandb.log('validation/{}'.format(key), stat_dict[key]/float(batch_idx+1),
                     step=(epoch_cnt+1)*len(self.train_dataloader)*self.config.data.batch_size)
