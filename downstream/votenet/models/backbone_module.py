@@ -13,7 +13,7 @@ import os
 from models.backbone.pointnet2.pointnet2_modules import PointnetSAModuleVotes, PointnetFPModule
 from models.backbone.pointnet2.pointnet2_utils import furthest_point_sample
 from models.backbone.sparseconv.config import get_config
-from models.backbone.sparseconv.models_sparseconv import load_model
+# from models.backbone.sparseconv.models_sparseconv import load_model
 
 # import MinkowskiEngine as ME
 
