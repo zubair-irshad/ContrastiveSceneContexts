@@ -29,6 +29,10 @@ from torch.utils.data import DataLoader
 from torch.serialization import default_restore_location
 from lib.distributed import multi_proc_run, is_master_proc, get_world_size
 
+import wandb
+wandb.init(project="votenet")
+wandb.login(key="c4779119ee9d0aea91b4afb315bafb0bac03be91")
+
 class DetectionTrainer():
     def __init__(self, config):
         self.is_master = is_master_proc(get_world_size()) if get_world_size() > 1 else True
@@ -148,8 +152,8 @@ class DetectionTrainer():
         # Load the Adam optimizer
         self.optimizer = optim.Adam(net.parameters(), lr=config.optimizer.learning_rate, weight_decay=config.optimizer.weight_decay)
         # writer
-        if self.is_master:
-            self.writer = SummaryWriter(log_dir='tensorboard')
+        # if self.is_master:
+        #     self.writer = SummaryWriter(log_dir='tensorboard')
         self.config = config
         self.dataset_config = dataset_config
         self.net = net
@@ -278,8 +282,10 @@ class DetectionTrainer():
             if ((batch_idx+1) % batch_interval == 0) and self.is_master:
                 logging.info(' ---- batch: %03d ----' % (batch_idx+1))
                 for key in stat_dict:
-                    self.writer.add_scalar('training/{}'.format(key), stat_dict[key]/batch_interval, 
-                                          (epoch_cnt*len(self.train_dataloader)+batch_idx)*self.config.data.batch_size)
+                    # self.writer.add_scalar('training/{}'.format(key), stat_dict[key]/batch_interval, 
+                    #                       (epoch_cnt*len(self.train_dataloader)+batch_idx)*self.config.data.batch_size)
+                    wandb.log({key:stat_dict[key]/batch_interval for key in stat_dict},
+                        step=(epoch_cnt*len(self.train_dataloader)+batch_idx)*self.config.data.batch_size)
                 for key in sorted(stat_dict.keys()):
                     logging.info('mean %s: %f'%(key, stat_dict[key]/batch_interval))
                     stat_dict[key] = 0
@@ -335,13 +341,21 @@ class DetectionTrainer():
             for key in sorted(stat_dict.keys()):
                 self.writer.add_scalar('validation/{}'.format(key), stat_dict[key]/float(batch_idx+1),
                                 (epoch_cnt+1)*len(self.train_dataloader)*self.config.data.batch_size)
+                
+                wandb.log('validation/{}'.format(key), stat_dict[key]/float(batch_idx+1),
+                    step=(epoch_cnt+1)*len(self.train_dataloader)*self.config.data.batch_size)
+                # wandb.log({key:stat_dict[key]/float(batch_idx+1) for key in stat_dict},
+                #     step=(EPOCH_CNT+1)*len(TRAIN_DATALOADER)*BATCH_SIZE)
+                
+
 
         # Evaluate average precision
         metrics_dict = ap_calculator.compute_metrics()
         for key in metrics_dict:
             logging.info('eval %s: %f'%(key, metrics_dict[key]))
         if self.is_master:
-            self.writer.add_scalar('validation/mAP{}'.format(self.config.test.ap_iou), metrics_dict['mAP'], (epoch_cnt+1)*len(self.train_dataloader)*self.config.data.batch_size)
+            # self.writer.add_scalar('validation/mAP{}'.format(self.config.test.ap_iou), metrics_dict['mAP'], (epoch_cnt+1)*len(self.train_dataloader)*self.config.data.batch_size)
+            wandb.log('validation/mAP{}'.format(self.config.test.ap_iou), metrics_dict['mAP'], step=(epoch_cnt+1)*len(self.train_dataloader)*self.config.data.batch_size)
         #mean_loss = stat_dict['loss']/float(batch_idx+1)
 
         return metrics_dict['mAP']
