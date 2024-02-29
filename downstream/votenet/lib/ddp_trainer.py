@@ -281,10 +281,11 @@ class DetectionTrainer():
             batch_interval = 10
             if ((batch_idx+1) % batch_interval == 0) and self.is_master:
                 logging.info(' ---- batch: %03d ----' % (batch_idx+1))
-                for key in stat_dict:
-                    # self.writer.add_scalar('training/{}'.format(key), stat_dict[key]/batch_interval, 
-                    #                       (epoch_cnt*len(self.train_dataloader)+batch_idx)*self.config.data.batch_size)
-                    wandb.log('training/{}'.format(key), stat_dict[key]/batch_interval)
+                # for key in stat_dict:
+                #     # self.writer.add_scalar('training/{}'.format(key), stat_dict[key]/batch_interval, 
+                #     #                       (epoch_cnt*len(self.train_dataloader)+batch_idx)*self.config.data.batch_size)
+                #     wandb.log('training/{}'.format(key), stat_dict[key]/batch_interval)
+                wandb.log({key:stat_dict[key]/batch_interval for key in stat_dict})
                 # wandb.log({key:stat_dict[key]/batch_interval for key in stat_dict})
                 for key in sorted(stat_dict.keys()):
                     logging.info('mean %s: %f'%(key, stat_dict[key]/batch_interval))
@@ -338,11 +339,11 @@ class DetectionTrainer():
         # Log statistics
         logging.info('eval mean %s: %f'%(key, stat_dict[key]/(float(batch_idx+1))))
         if self.is_master:
-            for key in sorted(stat_dict.keys()):
+            # for key in sorted(stat_dict.keys()):
                 # self.writer.add_scalar('validation/{}'.format(key), stat_dict[key]/float(batch_idx+1),
                 #                 (epoch_cnt+1)*len(self.train_dataloader)*self.config.data.batch_size)
-                
-                wandb.log('validation/{}'.format(key), stat_dict[key]/float(batch_idx+1))
+            wandb.log({key:stat_dict[key]/float(batch_idx+1) for key in stat_dict})
+                # wandb.log('validation/{}'.format(key), stat_dict[key]/float(batch_idx+1))
                 # wandb.log({key:stat_dict[key]/float(batch_idx+1) for key in stat_dict},
                 #     step=(EPOCH_CNT+1)*len(TRAIN_DATALOADER)*BATCH_SIZE)
                 
